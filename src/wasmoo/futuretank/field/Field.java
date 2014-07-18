@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import wasmoo.futuretank.Control;
 import wasmoo.futuretank.Direction;
 
@@ -14,6 +15,7 @@ public class Field {
     private final HashMap<FieldPoint, FieldObject> pointMap = new HashMap();
     private final HashMap<FieldObject, FieldPoint> objectMap = new HashMap();
     
+    public Field() {};
     /**
      * Creates a deep copy of the field
      * @param f The field to copy
@@ -67,20 +69,16 @@ public class Field {
     /**
      * Returns all objects in the direction of the given point
      * @param origin The point
+     * @param dir The direction
      * @return  The object
      */
     public ArrayList<FieldObject> get(FieldPoint origin, Direction dir) {
-        ArrayList<FieldPoint> points = new ArrayList();
-        for (Map.Entry<FieldPoint, FieldObject> e : pointMap.entrySet()) {
-            if (dir.isDirectionOf(origin, e.getKey())) {
-                points.add(e.getKey());
-            }
-        }
-        
-        Collections.sort(points, FieldPoint.getDistanceComparator(origin));
         ArrayList<FieldObject> ret = new ArrayList();
-        for (FieldPoint p : points) {
-            ret.add(get(p));
+        FieldPoint p = dir.getFieldPoint(origin);
+        while (isOnField(p)) {
+            FieldObject obj = get(p);
+            if (obj != null) ret.add(obj);
+            p = dir.getFieldPoint(p);
         }
         return ret;
     }
@@ -116,4 +114,19 @@ public class Field {
         return p.x >= 0 && p.x < FIELD_WIDTH && p.y >= 0 && p.y < FIELD_HEIGHT;
     }
     
+    /**
+     * Returns all objects in the field
+     * @return 
+     */
+    public Set<FieldObject> getAllObjects() {
+        return objectMap.keySet();
+    }
+
+    /**
+     * Returns all points at which there is an object
+     * @return 
+     */
+    public Set<FieldPoint> getAllPoints() {
+        return pointMap.keySet();
+    }
 }

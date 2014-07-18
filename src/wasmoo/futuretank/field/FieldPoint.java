@@ -15,7 +15,7 @@ public class FieldPoint extends Point {
         return new Comparator<FieldPoint>() {
             @Override
             public int compare(FieldPoint o1, FieldPoint o2) {
-                return (int)Math.signum(o2.distance(origin) - o1.distance(origin));
+                return (int)Math.signum(-o2.distance(origin) + o1.distance(origin));
             }
         };
     }

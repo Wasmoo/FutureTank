@@ -24,7 +24,7 @@ public enum Direction {
      */
     public boolean isDirectionOf(FieldPoint origin, FieldPoint dest) {
         int dx = (int)Math.signum(dest.x - origin.x);
-        int dy = (int)Math.signum(dest.x - origin.x);
+        int dy = (int)Math.signum(dest.y - origin.y);
         return deltaX == dx && deltaY == dy;
     }
     
@@ -35,6 +35,16 @@ public enum Direction {
      */
     public FieldPoint getFieldPoint(FieldPoint p) {
         return new FieldPoint(p.x + deltaX, p.y + deltaY);
+    }
+    
+    /**
+     * Creates a new FieldPoint moving in this direction by the distance.
+     * @param p
+     * @param distance
+     * @return 
+     */
+    public FieldPoint getFieldPoint(FieldPoint p, int distance) {
+        return new FieldPoint(p.x + deltaX*distance, p.y + deltaY*distance);
     }
     
     /**
